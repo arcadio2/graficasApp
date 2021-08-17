@@ -1,9 +1,24 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import {map} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class GraficasService {
 
-  constructor() { }
+  constructor(private http:HttpClient) {}
+
+  getUsuarioRedes(){
+    return this.http.get('http://localhost:3000/grafica'); 
+  }
+  getDonasData(){
+    return this.getUsuarioRedes().
+      pipe(
+        map(data=>{
+          const labels = Object.keys(data);
+          const values = Object.values(data); 
+          return {labels,values}; 
+        })
+      ); 
+  }
 }
